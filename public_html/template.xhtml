@@ -1,0 +1,121 @@
+<form name="ime" action="">
+    <fieldset style="margin:0.5ex;padding:0 1ex 1ex">
+        <legend>ImageMapEdit</legend>
+        <fieldset style="float:left;margin:0 0.5ex 0.5ex;padding:0 1ex 1ex">
+            <legend style="padding:0 0.5ex" class="ime_t_newarea">Create new area</legend>
+            <a href="javascript:ime_newArea('rect')" style="padding:1px;background:white;color:darkblue" class="ime_t_rect">rect(angle)</a>
+            <br />
+            <a href="javascript:ime_newArea('circle')" style="padding:1px;background:white;color:darkblue" class="ime_t_circle">circle</a>
+
+            <br />
+            <a href="javascript:ime_newArea('poly')" style="padding:1px;background:white;color:darkblue" class="ime_t_poly">poly(gon)</a>
+        </fieldset>
+        <fieldset style="float:left;margin:0 0.5ex 0.5ex;padding:0 1ex 1ex">
+            <legend style="padding:0 0.5ex" class="ime_t_editarea">Edit area</legend>
+            <select name="area" size="10" style="float:left;height:10em;margin:0.5ex;width:10em" onclick="ime_editArea(document.ime.area.selectedIndex)"></select>
+            <div id="imeProps" style="float:left;margin:0.5ex;padding:0 1ex 1ex;display:none">
+                <div style="float:left;margin:0.5ex;padding:0 1ex 1ex">
+
+                        <label for="ime_areaLink" class="ime_t_linktarget">Link target</label>
+                        <br />
+                        <input id="ime_areaLink" name="areaLink" style="width:10em" onchange="ime_saveArea()" />
+                        <br />
+                        <label for="ime_areaTitle"><span class="ime_t_linktitle">Link title</span> (<span class="ime_t_optional">optional</span>)</label>
+                        <br />
+
+                        <input id="ime_areaTitle" name="areaTitle" style="width:10em" onchange="ime_saveArea()" />
+                </div>
+                <div id="imePropsRect" style="float:left;margin:0.5ex;padding:0 1ex 1ex;display:none">
+                    <label for="ime_areaRectLeft" class="ime_t_rectleft">Left</label>/<label for="ime_areaRectTop" class="ime_t_recttop">Top</label>
+                    <br />
+                    <input id="ime_areaRectLeft" name="areaRectLeft" style="width:4em" onchange="ime_saveArea()" />
+                    <input id="ime_areaRectTop" name="areaRectTop" style="width:4em" onchange="ime_saveArea()" />
+
+                    <span class="ime_t_rectchoose1">Select with left mouse button</span>
+                    <br/>
+                    <label for="ime_areaRectRight" class="ime_t_rectright">Right</label>/<label for="ime_areaRectBottom" class="ime_t_rectbottom">Bottom</label>
+                    <br />
+                    <input id="ime_areaRectRight" name="areaRectRight" style="width:4em" onchange="ime_saveArea()" />
+                    <input id="ime_areaRectBottom" name="areaRectBottom" style="width:4em" onchange="ime_saveArea()" />
+                    <span class="ime_t_rectchoose2">Select with right mouse button</span>
+
+                </div>
+                <div id="imePropsCircle" style="float:left;margin:0.5ex;padding:0 1ex 1ex;display:none">
+                    <label class="ime_t_position">Position</label>
+                    <br />
+                    <input name="areaCircleX" style="width:4em" onchange="ime_saveArea()" />
+                    <input name="areaCircleY" style="width:4em" onchange="ime_saveArea()" />
+                    <span class="ime_t_circlechoose1">Select with left mouse button</span>
+                    <br />
+
+                    <label for="ime_areaCircleRadius" class="ime_t_radius">Radius</label>
+                    <br />
+                    <input id="ime_areaCircleRadius" name="areaCircleRadius" style="width:4em" onchange="ime_saveArea()" />
+                    <span class="ime_t_circlechoose2">Select with right mouse button</span>
+                </div>
+                <div id="imePropsPoly" style="float:left;margin:0.5ex;padding:0 1ex 1ex;display:none">
+                    <label class="ime_t_coordinates">Coordinates</label>
+
+                    <br />
+                    <p id="imePropsPolyCoords" style="font-size:0.8em;max-width:20em;"></p>
+                    <a href="javascript:ime_deletePolyCoords()" style="padding:1px;background:white;color:darkblue" class="ime_t_deletecoordinates">Delete all coordinates</a>
+                    <br />
+                    <span class="ime_t_polychoose">Add new corner with left mouse button</span>
+                </div>
+                <div style="clear:both"></div>
+                <a href="javascript:ime_deleteArea()" style="padding:1px;background:white;color:darkblue" class="ime_t_deletearea">Delete selected area</a>
+
+            </div>
+            <div style="clear:both"></div>
+        </fieldset>
+        <div style="clear:both"></div>
+        <fieldset style="margin:0 0.5ex 0.5ex;padding:0 1ex 1ex">
+            <legend class="ime_t_preferences">General preferences</legend>
+            <div style="float:left;margin-right:1em;">
+                <label for="ime_imageDescription" class="ime_t_imagedescription">Image description</label>
+
+                <br />
+                <input id="ime_imageDescription" name="imageDescription" onchange="ime_updateResult()" />
+            </div>
+            <div style="float:left">
+                <label style="display:block" class="ime_t_infolinkposition">Position of information link</label>
+                <div style="float:left">
+                    <input type="radio" name="imageDescriptionPos" value="bottom-left" onchange="ime_updateResult()" checked="checked" id="ime_imageDescriptionPos_bottomleft" /><label for="ime_imageDescriptionPos_bottomleft"><span class="ime_t_bottomleft">Bottom left</span> (<span class="ime_t_default">default</span>)</label>
+
+                </div>
+                <div style="float:left">
+                    <input type="radio" name="imageDescriptionPos" value="bottom-right" onchange="ime_updateResult()" id="ime_imageDescriptionPos_bottomright" /><label for="ime_imageDescriptionPos_bottomright" class="ime_t_bottomright">Bottom right</label>
+                </div>
+                <div style="float:left">
+                    <input type="radio" name="imageDescriptionPos" value="top-left" onchange="ime_updateResult()" id="ime_imageDescriptionPos_topleft" /><label for="ime_imageDescriptionPos_topleft" class="ime_t_topleft">Top left</label>
+                </div>
+                <div style="float:left">
+
+                    <input type="radio" name="imageDescriptionPos" value="top-right" onchange="ime_updateResult()" id="ime_imageDescriptionPos_topright" /><label for="ime_imageDescriptionPos_topright" class="ime_t_topright">Top right</label>
+                </div>
+                <div style="float:left">
+                    <input type="radio" name="imageDescriptionPos" value="none" onchange="ime_updateResult()" id="ime_imageDescriptionPos_none" /><label for="ime_imageDescriptionPos_none" class="ime_t_nolink">No link</label>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </fieldset>
+
+        <fieldset style="margin:0.5ex;padding:0 1ex 1ex">
+            <legend class="ime_t_importareas">Import areas from wikicode</legend>
+            <a href="javascript:ime_showImport()" style="padding:1px;background:white;color:darkblue" id="imeImportShow"><span class="ime_t_showtextbox">Show text box</span> &gt;</a>
+            <a href="javascript:ime_hideImport()" style="padding:1px;background:white;color:darkblue;display:none" id="imeImportHide"><span class="ime_t_hidetextbox">Hide text box</span> &lt;</a>
+            <div id="imeImport" style="display:none">
+                <textarea name="importText" style="width:100%;margin:0;height:10em;display:block"></textarea>
+
+                <a href="javascript:ime_importLines()" style="padding:1px;background:white;color:darkblue" class="ime_t_import">Import</a>
+            </div>
+        </fieldset>
+        <fieldset style="margin:0.5ex;padding:0 1ex 1ex">
+            <legend class="ime_t_generatedwikicode">Generated wikicode</legend>
+            <div>
+                <code id="imeResult" style="display:block;line-height:1.2em"></code>
+            </div>
+
+        </fieldset>
+    </fieldset>
+</form>
