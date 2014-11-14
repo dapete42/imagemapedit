@@ -26,15 +26,9 @@ var IME_POLYSCRIPT = IME_BASE + 'poly.php';
 	Imports
 */
 
-// Load HTML form code for ImageMapEdit
-importScriptURI(IME_TEMPLATE);
-
 // Default error message, will be overwritten if translation is loaded
 var ime_translations = new Array();
 ime_translations['error_imagenotfound'] = 'ImageMapEdit: Could not find image in page structure.';
-// Container for translations
-// Load translations
-importScriptURI(IME_TRANSLATIONS);
 
 /*
 	Global variables
@@ -53,6 +47,8 @@ jQuery(document).ready(function(){
 	if (wgNamespaceNumber==6 && wgAction=='view') {
 		// If we can a div with id file, we initialize
 		if (document.getElementById('file')) {
+			importScriptURI(IME_TEMPLATE);
+			importScriptURI(IME_TRANSLATIONS);
 			ime_init1();
 		}
 	}
