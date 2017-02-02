@@ -9,6 +9,18 @@
 	Creative Commons Attribution ShareAlike (CC-by-sa), version 2 or later
 */
 
+// Compatibility layer for old versions of MediaWiki
+if (mw === undefined) mw = {};
+if (mw.config === undefined) mw.config = {};
+if (mw.config.get === undefined) {
+	mw.config.get = function(key) {
+		this[key];
+	};
+}
+if (mw.loader === undefined) mw.loader = {};
+if (mw.loader.load === undefined) mw.loader.load = importScriptURI;
+
+
 /*
 	Constants
 */
@@ -16,7 +28,7 @@
 var IME_BASE = '//tools.wmflabs.org/imagemapedit/';
 
 var IME_TEMPLATE = IME_BASE + 'template.php';
-var IME_TRANSLATIONS = IME_BASE + 'translations.php?lang=' + wgUserLanguage;
+var IME_TRANSLATIONS = IME_BASE + 'translations.php?lang=' + mw.config.get('wgUserLanguage');
 
 // Scripts to create the circle and polygon images
 var IME_CIRCLESCRIPT = IME_BASE + 'circle.php';
@@ -26,15 +38,9 @@ var IME_POLYSCRIPT = IME_BASE + 'poly.php';
 	Imports
 */
 
-// Load HTML form code for ImageMapEdit
-importScriptURI(IME_TEMPLATE);
-
 // Default error message, will be overwritten if translation is loaded
 var ime_translations = new Array();
 ime_translations['error_imagenotfound'] = 'ImageMapEdit: Could not find image in page structure.';
-// Container for translations
-// Load translations
-importScriptURI(IME_TRANSLATIONS);
 
 /*
 	Global variables
@@ -48,11 +54,13 @@ var ime_scale;
 /*
 	Start Initialization if this is an image page and there actually is an image
 */
-jQuery(document).ready(function(){
+$(document).ready(function(){
 	// Determine whether we are on an image page. Namespace must be 6 and action view
-	if (wgNamespaceNumber==6 && wgAction=='view') {
+	if (mw.config.get('wgNamespaceNumber')==6 && mw.config.get('wgAction')=='view') {
 		// If we can a div with id file, we initialize
 		if (document.getElementById('file')) {
+			mw.loader.load(IME_TEMPLATE);
+			mw.loader.load(IME_TRANSLATIONS);
 			ime_init1();
 		}
 	}
@@ -92,9 +100,9 @@ function ime_init1() {
 		return;
 	}
 
-	var url = wgScriptPath + '/api.php?format=xml&action=query&prop=imageinfo&iiprop=size&titles=' + wgPageName;
+	var url = mw.config.get('wgScriptPath') + '/api.php?format=xml&action=query&prop=imageinfo&iiprop=size&titles=' + mw.config.get('wgPageName');
 
-	jQuery.get(url, function(response) {
+	$.get(url, function(response) {
 		var iiAttr = response.getElementsByTagName('ii')[0].attributes;
 		ime_width = iiAttr.getNamedItem('width').nodeValue;
 		ime_height = iiAttr.getNamedItem('height').nodeValue;
@@ -212,11 +220,11 @@ function ime_getElementsByClassName(className) {
 	place to put it does not exist - by showing an alert box.
 */
 function ime_error(message) {
-	var jqFile = jQuery('#file');
-	var jqIme = jQuery('#ime');
+	var jqFile = $('#file');
+	var jqIme = $('#ime');
 
 	if (jqFile.length !== 0) {
-		var jqImeError = jQuery('<p/>')
+		var jqImeError = $('<p/>')
 		.css({
 			'color' : 'darkred',
 			'background' : 'white',
@@ -420,7 +428,7 @@ function ime_updateResult() {
 
 	var result = Array();
 	result.push('<imagemap>');
-	result.push(wgPageName + '|' + document.ime.imageDescription.value);
+	result.push(mw.config.get('wgPageName') + '|' + document.ime.imageDescription.value);
 	result.push('');
 	for (var i=0; i<ime_areas.length; i++) {
 		var coords = ime_areas[i].coords;
@@ -795,15 +803,15 @@ function ime_importLines() {
 }
 
 function ime_showImport() {
-	jQuery('#imeImport').show();
-	jQuery('#imeImportShow').hide();
-	jQuery('#imeImportHide').show();
+	$('#imeImport').show();
+	$('#imeImportShow').hide();
+	$('#imeImportHide').show();
 }
 
 function ime_hideImport() {
-	jQuery('#imeImport').hide();
-	jQuery('#imeImportShow').show();
-	jQuery('#imeImportHide').hide();
+	$('#imeImport').hide();
+	$('#imeImportShow').show();
+	$('#imeImportHide').hide();
 }
 
 /*
@@ -812,7 +820,7 @@ function ime_hideImport() {
 function ime_removeOtherUIElements() {
 	// Remove all UI elements of the 'annotations' feature used on Wikimedia
 	// Commons.
-	jQuery('#ImageAnnotationAddButton').remove();
+	$('#ImageAnnotationAddButton').remove();
 }
 
 /*
