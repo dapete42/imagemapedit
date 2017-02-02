@@ -1,0 +1,8 @@
+#!/bin/sh 
+
+if [ $(find $HOME/access.log $HOME/error.log -size +100M 2>/dev/null) ]; then
+	webservice stop >/dev/null
+	mv $HOME/access.log $HOME/access.log.0
+	mv $HOME/error.log $HOME/error.log.0
+	webservice start >/dev/null
+fi
