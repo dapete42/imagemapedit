@@ -2,4 +2,5 @@
 *.log
 *.log.*
 replica.my.cnf
+service.manifest
 !.gitignore
