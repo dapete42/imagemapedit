@@ -102,7 +102,7 @@ function ime_init1() {
 
 	var url = mw.config.get('wgScriptPath') + '/api.php?format=json&action=query&prop=imageinfo&iiprop=size&titles=' + mw.config.get('wgPageName');
 
-	$.get(url, function(response) {
+	$.get(url, function(data) {
 		if( typeof data.query.pages != "undefined" ) {
 	        	imageProperties = data.query.pages[Object.keys(data.query.pages)[0]];
 			ime_width = imageProperties.imageinfo[0].width;
