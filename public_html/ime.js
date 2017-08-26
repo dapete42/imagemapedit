@@ -100,22 +100,24 @@ function ime_init1() {
 		return;
 	}
 
-	var url = mw.config.get('wgScriptPath') + '/api.php?format=xml&action=query&prop=imageinfo&iiprop=size&titles=' + mw.config.get('wgPageName');
+	var url = mw.config.get('wgScriptPath') + '/api.php?format=json&action=query&prop=imageinfo&iiprop=size&titles=' + mw.config.get('wgPageName');
 
-	$.get(url, function(response) {
-		var iiAttr = response.getElementsByTagName('ii')[0].attributes;
-		ime_width = iiAttr.getNamedItem('width').nodeValue;
-		ime_height = iiAttr.getNamedItem('height').nodeValue;
+	$.get(url, function(data) {
+		if( typeof data.query.pages != "undefined" ) {
+	        	imageProperties = data.query.pages[Object.keys(data.query.pages)[0]];
+			ime_width = imageProperties.imageinfo[0].width;
+			ime_height = imageProperties.imageinfo[0].height;
 
-		ime_scale = img.width/ime_width;
+			ime_scale = img.width/ime_width;
 
-		// Show 'show ImageMapEdit' button now
-		var a = document.createElement('a');
-		a.id = 'imeLink';
-		a.href = 'javascript:ime_init2()';
-		a.style.display = 'block';
-		a.appendChild(document.createTextNode('ImageMapEdit >'));
-		document.getElementById('file').appendChild(a);
+			// Show 'show ImageMapEdit' button now
+			var a = document.createElement('a');
+			a.id = 'imeLink';
+			a.href = 'javascript:ime_init2()';
+			a.style.display = 'block';
+			a.appendChild(document.createTextNode('ImageMapEdit >'));
+			document.getElementById('file').appendChild(a);
+		}
 	});
 }
 
