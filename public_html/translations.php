@@ -3,8 +3,9 @@
 header('Content-type: text/javascript; encoding=utf8');
 
 $languages_ok = ['en','de','de-formal','it'];
-$lang = in_array($_GET['lang'],$languages_ok) ? $lang : 'en';
-if (!$lang) $lang = 'en';
+
+$lang = $_GET['lang'];
+$lang = in_array($lang,$languages_ok) ? $lang : 'en';
 
 ?>
 /*
