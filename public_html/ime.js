@@ -25,7 +25,7 @@ if (mw.loader.load === undefined) mw.loader.load = importScriptURI;
 	Constants
 */
 
-var IME_BASE = '//tools.wmflabs.org/imagemapedit/';
+var IME_BASE = '//imagemapedit.toolforge.org/';
 
 var IME_TEMPLATE = IME_BASE + 'template.php';
 var IME_TRANSLATIONS = IME_BASE + 'translations.php?lang=' + mw.config.get('wgUserLanguage');

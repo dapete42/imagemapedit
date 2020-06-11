@@ -9,7 +9,7 @@
 	Creative Commons Attribution ShareAlike (CC-by-sa), version 2 or later
 */
 
-var IME_BASE = '//tools.wmflabs.org/imagemapedit/';
+var IME_BASE = '//imagemapedit.toolforge.org/';
 
 var IME_JQUERY = IME_BASE + 'jquery.js';
 var IME_MAIN = IME_BASE + 'ime.js';
